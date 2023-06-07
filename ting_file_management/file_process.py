@@ -6,12 +6,9 @@ from ting_file_management.file_management import txt_importer
 def process(path_file, instance):
     for index in range(len(instance)):
         if instance.search(index)["nome_do_arquivo"] == path_file:
-            sys.stdout.write(f"Arquivo {path_file} já está na fila\n")
+            return None
 
     text = txt_importer(path_file)
-
-    if text is None:
-        sys.stdout.write(f"Arquivo {path_file} não encontrado\n")
 
     data = {
         "nome_do_arquivo": path_file,
@@ -24,8 +21,16 @@ def process(path_file, instance):
 
 
 def remove(instance):
-    """Aqui irá sua implementação"""
+    if len(instance) == 0:
+        return sys.stdout.write("Não há elementos\n")
+
+    filed = instance.dequeue()
+    sys.stdout.write(
+        f"Arquivo {filed['nome_do_arquivo']} removido com sucesso\n")
 
 
 def file_metadata(instance, position):
-    """Aqui irá sua implementação"""
+    try:
+        sys.stdout.write(str(instance.search(position)))
+    except IndexError:
+        sys.stderr.write("Posição inválida")
